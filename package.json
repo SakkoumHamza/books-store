@@ -1,0 +1,33 @@
+{
+  "name": "books-store",
+  "version": "1.0.0",
+  "description": "Books store's API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha",
+    "lint": "eslint .",
+    "coverage-text": "nyc --reporter=text mocha",
+    "coverage-html": "nyc --reporter=html mocha"
+  },
+  "keywords": [
+    "Books",
+    "nodejs",
+    "store"
+  ],
+  "author": "Sakkoum Hamza",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^4.18.2",
+    "mongoose": "^7.6.1",
+    "npx": "^10.2.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.8",
+    "mocha": "^11.7.2",
+    "mongo-unit": "^3.4.0"
+  }
+}
