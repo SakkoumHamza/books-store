@@ -1,4 +1,4 @@
-const Mongoose = require('mongoose')
+import Mongoose from 'mongoose'
  
 const bookSchema = new Mongoose.Schema({
   id: String,
@@ -10,7 +10,7 @@ const bookSchema = new Mongoose.Schema({
   description: String
 })
 
-module.exports = {
+export const DAO = {
   init: () => {
     return Mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
       .then(() => console.log('✅ Successfully connected to MongoDB'))
@@ -19,5 +19,5 @@ module.exports = {
   close: () => Mongoose.disconnect(),
   Book: Mongoose.model('books', bookSchema),
   Favorite: Mongoose.model('favorite', bookSchema),
-}
+};
 

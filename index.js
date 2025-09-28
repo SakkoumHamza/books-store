@@ -1,6 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
-import DAO from './dao.js';
+import {DAO} from './dao.js';
 import cors from 'cors';
 
 const app = express();
