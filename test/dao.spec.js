@@ -1,6 +1,6 @@
 const MongoUnit = require("mongo-unit");
-const DAO =  require("../dao.js");
-const TestData =  require("./books.json");
+import DAO from '../dao.js';
+import TestData from './books.json' assert { type: 'json' };
 
 describe("StoreDAO", () => {
   beforeAll(async () => {
