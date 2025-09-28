@@ -1,52 +1,87 @@
-const Express = require('express');
-require('dotenv').config();
-const BodyParser= require('body-parser');
-const DAO = require('./dao');
-const Cors = require('cors');
-const App = Express();
+import express from 'express';
+import 'dotenv/config';
+import DAO from './dao.js';
+import cors from 'cors';
 
-App.use(Cors())
-App.use(BodyParser.urlencoded({ extended: true }))
-App.use(BodyParser.json())
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-DAO.init()
+// -------------------- Middleware --------------------
+app.use(cors({ origin: 'http://localhost:4200' })); // restrict to Angular dev server
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-App.get('/', async (req, res) => {
-    return res.send({
-        version: '1.0.0'
-    });
-})
+// -------------------- Initialize DB --------------------
+DAO.init().catch(err => {
+  console.error("Failed to initialize DB:", err);
+  process.exit(1);
+});
 
-App.get('/books', async (req, res) => {
+// -------------------- Routes --------------------
+
+// Health check
+app.get('/', (req, res) => {
+  res.send({ version: '1.0.0' });
+});
+
+// Get all books
+app.get('/books', async (req, res) => {
+  try {
     const books = await DAO.Book.find();
-    if (!books) 
-        return res.status(404).send("Books were not found");
-    return res.send(books);
-})
+    if (!books || books.length === 0) return res.status(404).send("No books found");
+    res.send(books);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
-App.get('/books/:name', async (req, res) => {
-    let book = await DAO.Book.findOne({'$or': [
-        {title: new RegExp(req.params.name, "i") },
-        {id: req.params.name},
-    ]})
-    if (!book) 
-        return res.status(404).send("Book was not found");
-    return res.send(book);
-})
+// Get book by name or ID
+app.get('/books/:query', async (req, res) => {
+  try {
+    const query = req.params.query;
 
-App.post('/favorites', async (req, res) => {
-    let favorite = new DAO.Favorite(req.body);
+    // Try to find by exact ID first
+    let book = await DAO.Book.findOne({ id: query });
+
+    // If not found by ID, try title search (case-insensitive)
+    if (!book) {
+      book = await DAO.Book.findOne({ title: new RegExp(query, "i") });
+    }
+
+    if (!book) return res.status(404).send("Book not found");
+    res.send(book);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Add a favorite
+app.post('/favorites', async (req, res) => {
+  try {
+    const favorite = new DAO.Favorite(req.body);
     await favorite.save();
-    res.send({message:'success'})
-})
+    res.send({ message: 'Favorite added successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Failed to add favorite");
+  }
+});
 
-App.get('/favorites', async (req, res) => {
+// Get all favorites
+app.get('/favorites', async (req, res) => {
+  try {
     const favorites = await DAO.Favorite.find();
-    if (!favorites) 
-        return res.status(404).send("Favorites list is empty");
-    return res.send(favorites);
-})
+    if (!favorites || favorites.length === 0) return res.status(404).send("No favorites found");
+    res.send(favorites);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
-App.listen(process.env.PORT || 3000, () => {
-    console.log('listening on 3000')
-})
+// -------------------- Start server --------------------
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});

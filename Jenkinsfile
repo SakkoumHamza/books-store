@@ -31,15 +31,15 @@ node('workers'){
     }
 
     stage('Build'){
-        docker.build(imageName)
+        docker.build("${imageName}:${commitID()}")
     }
 
     stage('Push'){
-        docker.withRegistry(registry, 'registry') {
-            docker.image(imageName).push(commitID()) // Immutable, tied to a specific commit ID.
-
+        withCredentials([usernamePassword(credentialsId: 'registry', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            sh "docker login -u $DOCKER_USER -p $DOCKER_PASS $registry"
+            docker.image("${imageName}:${commitID()}").push()
             if (env.BRANCH_NAME == 'develop') {
-                docker.image(imageName).push('develop') // Mutable, always updated with the latest image built from develop.
+                docker.image("${imageName}:${commitID()}").push('develop')
             }
         }
     }
