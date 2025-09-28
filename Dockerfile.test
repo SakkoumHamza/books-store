@@ -1,9 +1,14 @@
-FROM node:14.17.0
+FROM node:20
 
 WORKDIR /app
 
 COPY package-lock.json package.json .
 
-RUN npm i
+RUN npm install --include=dev
+
+# Install libssl1.1
+RUN  apt update && \
+    wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb && \
+    dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
 
 COPY . .

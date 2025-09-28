@@ -1,10 +1,10 @@
-FROM node:14.17.0
+FROM node:20
 
 WORKDIR /app
 
 COPY package-lock.json package.json .
 
-RUN npm i --only=prod
+RUN npm i --include=dev
 
 COPY index.js dao.js ./
 

@@ -1,5 +1,4 @@
 export default {
   testEnvironment: "node",
-  roots: ["<rootDir>/test"],
-  transform: {}
+  roots: ["<rootDir>/test"]
 };

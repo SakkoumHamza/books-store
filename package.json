@@ -1,11 +1,12 @@
 {
   "name": "books-store",
   "version": "1.0.0",
+  "type" :"module",
   "description": "Books store's API",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "set NODE_OPTIONS=--experimental-vm-modules && jest",
+    "test": "jest",
     "lint": "eslint .",
     "coverage-html": "jest --coverage --coverageReporters=html"
   },
@@ -20,19 +21,18 @@
     "dotenv": "^17.2.2",
     "express": "^4.18.2",
     "mongoose": "^7.6.1",
-    "npx": "^10.2.2"
+    "npx": "^10.2.2",
+    "eslint":"9.36.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.3",
     "@eslint/js": "^9.36.0",
     "babel-jest": "^29.7.0",
-    "chai": "^4.3.8",
     "eslint": "^9.36.0",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.4.0",
     "jest": "^29.7.0",
-    "mocha": "^11.7.2",
     "mongo-unit": "^3.4.0"
   }
 }
