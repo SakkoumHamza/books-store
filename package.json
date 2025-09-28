@@ -4,12 +4,6 @@
   "type" :"module",
   "description": "Books store's API",
   "main": "index.js",
-  {
-  "jest": {
-    "extensionsToTreatAsEsm": [".js"],
-    "testEnvironment": "node"
-  }
-}
   "scripts": {
     "start": "node index.js",
     "test": "jest",

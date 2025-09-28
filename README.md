@@ -62,7 +62,7 @@ BOOKS-STORE/
 
 ## 📸 Screenshots
 
-### 🔹 /books endpoint exmample
+### 🔹 /books endpoint example
 ![Mongodb](screenshots/books.png)
 
 ### 🔹 Jenkins 
