@@ -1,6 +1,6 @@
-const MongoUnit = require("mongo-unit");
-const DAO = require('../dao.js');
-const TestData = require('./books.json');
+import MongoUnit from "mongo-unit";
+import * as DAO from "../dao.js";
+import TestData from "./books.json";
 
 describe("StoreDAO", () => {
   beforeAll(async () => {
@@ -8,7 +8,7 @@ describe("StoreDAO", () => {
     console.log("fake mongo is started: ", MongoUnit.getUrl());
     process.env.MONGO_URL = MongoUnit.getUrl();
     process.env.MONGO_DATABASE = "test";
-    DAO.init();
+    await DAO.init();
   });
 
   beforeEach(async () => {
@@ -20,7 +20,7 @@ describe("StoreDAO", () => {
   });
 
   afterAll(async () => {
-    DAO.close();
+    await DAO.close();
     await MongoUnit.stop();
   });
 

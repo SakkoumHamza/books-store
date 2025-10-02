@@ -1,12 +1,12 @@
 {
   "name": "books-store",
   "version": "1.0.0",
-  "type" :"module",
   "description": "Books store's API",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint .",
     "coverage-html": "jest --coverage --coverageReporters=html"
   },

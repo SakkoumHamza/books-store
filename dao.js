@@ -1,6 +1,6 @@
-const Mongoose = require('mongoose')
- 
-const bookSchema = new Mongoose.Schema({
+import mongoose from 'mongoose';
+
+const bookSchema = new mongoose.Schema({
   id: String,
   title: String,
   cover: String,
@@ -8,16 +8,20 @@ const bookSchema = new Mongoose.Schema({
   rating: String,
   author: String,
   description: String
-})
+});
 
-module.exports = {
-  init: () => {
-    return Mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-      .then(() => console.log('✅ Successfully connected to MongoDB'))
-      .catch(err => console.error('❌ MongoDB connection error:', err));
-  },
-  close: () => Mongoose.disconnect(),
-  Book: Mongoose.model('books', bookSchema),
-  Favorite: Mongoose.model('favorite', bookSchema),
+const Book = mongoose.model('books', bookSchema);
+const Favorite = mongoose.model('favorite', bookSchema);
+
+export const init = () => {
+  return mongoose.connect(process.env.MONGO_URL, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
+  })
+    .then(() => console.log('✅ Successfully connected to MongoDB'))
+    .catch(err => console.error('❌ MongoDB connection error:', err));
 };
 
+export const close = () => mongoose.disconnect();
+
+export { Book, Favorite };

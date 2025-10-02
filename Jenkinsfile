@@ -37,7 +37,6 @@ node('workers'){
     stage('Push'){
         withCredentials([usernamePassword(credentialsId: 'registry', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             sh "docker login -u $DOCKER_USER -p $DOCKER_PASS $registry"
-            docker.image("${imageName}:${commitID()}").push()
             if (env.BRANCH_NAME == 'develop') {
                 docker.image("${imageName}:${commitID()}").push('develop')
             }
